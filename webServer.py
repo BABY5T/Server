@@ -2,6 +2,14 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 import json
 
+from dotenv import load_dotenv
+import os 
+
+# load .env
+load_dotenv()
+
+webPort = os.environ.get('webPort')
+
 app = Flask(__name__)
 CORS(app) # CORS를 전체 애플리케이션에 적용
 
@@ -17,4 +25,4 @@ def data():
         return None
     
 if __name__ == '__main__':
-    app.run(debug=True,port=3000,host='0.0.0.0')
+    app.run(debug=True, port=webPort, host='0.0.0.0')
