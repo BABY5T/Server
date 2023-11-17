@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Smart Cradle App</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+	</script>
 	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
+
 <body>
 	<div id="app">
 		<nav class="navbar" style="background-color: #333;">
@@ -18,6 +23,7 @@
 				</a>
 			</div>
 		</nav>
+
 
 		<div class="p-2 mb-4 bg-light rounded-3">
 			<div class="container-fluid py-5">
@@ -31,24 +37,28 @@
 		<div class="pt-3">
 			<div class="w-100 text-center my-3">
 				<!-- Button trigger modal -->
-				<button type="button" class="btn btn-lg btn-outline-success" style="height: 50px; width: 320px;" data-bs-toggle="modal" data-bs-target="#cryModal" v-on:click="load_Cry()">
+				<button type="button" class="btn btn-lg btn-outline-success" style="height: 50px; width: 320px;"
+					data-bs-toggle="modal" data-bs-target="#cryModal" v-on:click="load_Cry()">
 					아기 울음 원인 분석
 				</button>
 			</div>
 			<div class="w-100 text-center my-3">
 				<!-- Button trigger modal -->
-				<button type="button" class="btn btn-lg btn-outline-success" style="height: 50px; width: 320px;" data-bs-toggle="modal" data-bs-target="#poseModal" v-on:click="load_Pose()">
+				<button type="button" class="btn btn-lg btn-outline-success" style="height: 50px; width: 320px;"
+					data-bs-toggle="modal" data-bs-target="#poseModal" v-on:click="load_Pose()">
 					아기 자세 확인하기
 				</button>
 			</div>
 		</div>
 		<!-- Cry Modal -->
-		<div class="modal fade" id="cryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="cryModalLabel" aria-hidden="true">
+		<div class="modal fade" id="cryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+			aria-labelledby="cryModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h1 class="modal-title fs-5" id="cryModalLabel">아기 우는 이유 확인하기</h1>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" v-on:click="load_Cry()"></button>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+							v-on:click="load_Cry()"></button>
 					</div>
 					<div id="top1" class="modal-body">
 						<table class="table table-sm">
@@ -63,57 +73,84 @@
 								<tr v-for="(item, i) in cry">
 									<th scope="row">{{cry.length - i}}</th>
 									<td>{{item.date}}</td>
-									<td v-if="item.reason == 'diaper'"><span class="badge rounded-pill text-bg-danger">기저귀를 갈아주세요!</span></td>
+									<td v-if="item.reason == 'diaper'"><span class="badge rounded-pill text-bg-danger">기저귀를 갈아주세요!</span>
+									</td>
 									<td v-if="item.reason == 'awake'"><span class="badge rounded-pill text-bg-info">아기가 일어났어요!</span></td>
 									<td v-if="item.reason == 'hug'"><span class="badge rounded-pill text-bg-info">아기를 안아주세요</span></td>
-									<td v-if="item.reason == 'hungry'"><span class="badge rounded-pill text-bg-primary">아기가 배고파요</span></td>
+									<td v-if="item.reason == 'hungry'"><span class="badge rounded-pill text-bg-primary">아기가 배고파요</span>
+									</td>
 									<td v-if="item.reason == 'sad'"><span class="badge rounded-pill text-bg-danger">아기가 슬퍼요</span></td>
-									<td v-if="item.reason == 'sleepy'"><span class="badge rounded-pill text-bg-secondary">아기가 졸려요</span></td>
-									<td v-if="item.reason == 'uncomfortable'"><span class="badge rounded-pill text-bg-warning">아기가 불편해요</span></td>
+									<td v-if="item.reason == 'sleepy'"><span class="badge rounded-pill text-bg-secondary">아기가 졸려요</span>
+									</td>
+									<td v-if="item.reason == 'uncomfortable'"><span class="badge rounded-pill text-bg-warning">아기가
+											불편해요</span></td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-						<button type="button" class="btn btn-primary">새로고침</button>
+						<button type="button" class="btn btn-primary" v-on:click="load_Cry()">새로고침</button>
 					</div>
 				</div>
 			</div>
 		</div>
 
+
 		<!-- Pose Modal -->
-		<div class="modal fade" id="poseModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="poseModalLabel" aria-hidden="true">
+		<div class="modal fade" id="poseModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+			aria-labelledby="poseModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h1 class="modal-title fs-5" id="poseModalLabel">Modal title</h1>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
-					<div class="modal-body">
-						
+					<div class="modal-body text-center" style="margin: 0 auto;">
+						<div class="card text-bg-success mb-3" style="max-width: 18rem;" v-if="pose.front == 1">
+							<div class="card-header">안전~</div>
+							<div class="card-body">
+								<h5 class="card-title">아이가 바른 자세로 누워있습니다.</h5>
+								<p class="card-text">올바른 자세로 아이를 눕히면 영유아 돌연사 증후군을 방지할 수 있습니다.</p>
+							</div>
+						</div>
+						<div class="card text-bg-danger mb-3" style="max-width: 18rem;" v-if="pose.front == 0">
+							<div class="card-header">위험!</div>
+							<div class="card-body">
+								<h5 class="card-title">아이가 좋지 못한 자세로 누워있습니다.</h5>
+								<p class="card-text">올바른 자세로 아이를 눕히면 영유아 돌연사 증후군을 방지할 수 있습니다.</p>
+							</div>
+						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary">Understood</button>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+						<button type="button" class="btn btn-primary" v-on:click="load_Pose()">새로고침</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<script>
-		const { createApp, ref } = Vue
+		const {
+			createApp,
+			ref
+		} = Vue
 		createApp({
 			setup() {
-				
+
 			},
 			data() {
 				return {
 					ip: "172.19.0.159",
 					port: "8080",
-					cry: [
-						{"date": "loading...", "reason": ".."},
-						{"date": "loading...", "reason": ".."}
+					cry: [{
+							"date": "loading...",
+							"reason": ".."
+						},
+						{
+							"date": "loading...",
+							"reason": ".."
+						}
 					],
 					pose: {
 						front: 1
@@ -122,7 +159,7 @@
 			},
 			methods: {
 				load_Cry() {
-					axios.get('http://'+this.ip+':'+this.port+'/cry')
+					axios.get('http://' + this.ip + ':' + this.port + '/cry')
 						.then(response => {
 							this.cry = response.data.cry;
 							new bootstrap.ScrollSpy(document.body, {
@@ -135,7 +172,7 @@
 						});
 				},
 				load_Pose() {
-					axios.get('http://'+this.ip+':'+this.port+'/pose')
+					axios.get('http://' + this.ip + ':' + this.port + '/pose')
 						.then(response => {
 							this.pose = response.data.pose;
 							new bootstrap.ScrollSpy(document.body, {
@@ -151,4 +188,5 @@
 		}).mount('#app')
 	</script>
 </body>
+
 </html>
