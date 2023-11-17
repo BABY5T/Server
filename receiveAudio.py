@@ -14,8 +14,8 @@ import os
 # load .env
 load_dotenv()
 
-rasbIp = os.environ.get('RasbIp')
-videoSocketPort = int(os.environ.get('audioSocketPort'))
+rasbIp = os.getenv('RasbIp')
+videoSocketPort = int(os.getenv('audioSocketPort'))
 
 
 class YamNet:

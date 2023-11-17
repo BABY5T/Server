@@ -11,8 +11,8 @@ import os
 # load .env
 load_dotenv()
 
-serverIp = os.environ.get('serverIp')
-videoSocketPort = int(os.environ.get('videoSocketPort'))
+serverIp = os.getenv('serverIp')
+videoSocketPort = int(os.getenv('videoSocketPort'))
 
 # Disable scientific notation for clarity
 np.set_printoptions(suppress=True)
