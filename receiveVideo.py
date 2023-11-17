@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 from keras.models import load_model
 from PIL import Image, ImageOps
-
+import json
 from dotenv import load_dotenv
 import os 
 
@@ -18,8 +18,16 @@ videoSocketPort = int(os.getenv('videoSocketPort'))
 np.set_printoptions(suppress=True)
 
 # Load the model and labels
-model = load_model("keras_Model.h5", compile=False)
-class_names = open("labels.txt", "r").readlines()
+model = load_model("/Users/kim/IOTT/Server/keras_model.h5", compile=False)
+class_names = open("/Users/kim/IOTT/Server/labels.txt", "r").readlines()
+
+def create_json_entry(pose_value):
+    {
+        "pose": {
+            "front": pose_value
+        }
+    }
+    
 
 # socket에서 수신한 버퍼를 반환하는 함수
 def recvall(sock, count):
@@ -73,13 +81,28 @@ while True:
     normalized_image_array = (image_array.astype(np.float32) / 127.5) - 1
 
     # 모델 예측
+    #import pdb;pdb.set_trace()
     prediction = model.predict(np.expand_dims(normalized_image_array, axis=0))
     index = np.argmax(prediction)
     class_name = class_names[index].strip()
     confidence_score = prediction[0][index]
 
     # 결과 출력
+     # 결과 출력
     print("Class:", class_name, "Confidence Score:", confidence_score)
+        # 결과를 JSON 형식으로 저장 
+    if class_name == "0 front" :
+        pose_value = 1
+    else:
+        pose_value = 0
+    
+    result_json = {
+        "pose": {
+            "front": pose_value
+        }
+    }
+    with open("/Users/kim/IOTT/Server/result.json", "w") as json_file:
+        json.dump(result_json, json_file)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break

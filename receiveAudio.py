@@ -2,7 +2,7 @@ import socket
 import time
 import os
 from datetime import datetime
-
+import json
 import tensorflow as tf
 import librosa
 import io
@@ -14,8 +14,8 @@ import os
 # load .env
 load_dotenv()
 
-rasbIp = os.getenv('RasbIp')
-videoSocketPort = int(os.getenv('audioSocketPort'))
+rasbIp = str(os.getenv('rasbIp'))
+audioSocketPort = int(os.getenv('audioSocketPort'))
 
 
 class YamNet:
@@ -80,8 +80,8 @@ class YamNet:
 
 
 cur_path = os.getcwd()
-csv_path = os.path.join(cur_path, 'yamnet_class_map.csv')
-yam_model_path = os.path.join(cur_path, 'lite-model_yamnet_tflite_1.tflite')
+csv_path = ('/Users/kim/IOTT/Server/yamnet_class_map.csv')
+yam_model_path = ('/Users/kim/IOTT/Server/lite-model_yamnet_tflite_1.tflite')
 
 def is_Crying(yam_model_path,csv_path,wavfile_path):
     yamNet = YamNet(yam_model_path, csv_path)
@@ -116,7 +116,7 @@ def prediction(file_name):
     import tensorflow as tf
 
 
-    model_path = '/Users/kim/IOTT/resnet.h5'
+    model_path = '/Users/kim/IOTT/Server/resnet.h5'
     model = tf.keras.models.load_model(model_path)
     #model.summary() 
 
@@ -157,7 +157,7 @@ def prediction(file_name):
 def receive_file():
     #prepare client socket - TCP 
     serverName = rasbIp # 연결하는 대상 ip
-    serverPort = videoSocketPort
+    serverPort = audioSocketPort
 
     clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     clientSocket.connect((serverName, serverPort))
@@ -187,17 +187,18 @@ while True:
     new_file=receive_file()
     if is_Crying(yam_model_path,csv_path,new_file)==1:
         result=prediction(new_file)
-    else:
-        result='not_crying'
-    
-    import json
-    
-    current_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    entry = create_json_entry(current_date, result)
-    
-    json_file_path = "/Users/kim/IOTT/output.json"
-    append_to_json(json_file_path, 'cry', entry)
+        current_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        entry = create_json_entry(current_date, result)
+        
+        json_file_path = "/Users/kim/IOTT/Server/output.json"
+        append_to_json(json_file_path, 'cry', entry)
 
+    else:
+        pass
+    
+    
+    
+    
     
 
 #print(M)
